@@ -1,8 +1,11 @@
+<?xml version="1.0"?>
 <launch>
+  <arg name="frame" default="odom_combined" />
+  <arg name="child_frame" default="base_footprint" />
   <arg name="port" default="$(optenv HUSKY_PORT /dev/prolific)" />
 
-  <node pkg="clearpath_base" type="kinematic_node" name="husky_kinematic" ns="husky">
-    <param name="port" value="$(arg port)" />
+  <node pkg="clearpath_base" type="kinematic_node" name="husky_kinematic" >
+    <param name="port" type="string" value="$(arg port)" />
     <rosparam>    
       cmd_fill: True
       data:
@@ -16,13 +19,17 @@
   </node>
 
   <!-- Publish diagnostics information from low-level MCU outputs -->
-  <node pkg="husky_base" name="husky_base_diagnostics" type="diagnostics_publisher" />
+  <node pkg="husky_fei_base" name="husky_base_diagnostics" type="diagnostics_publisher" />
 	
   <!-- Publish wheel odometry from MCU encoder data -->
-  <node pkg="husky_base" name="husky_basic_odom" type="basic_odom_publisher" />
+  <node pkg="husky_fei_base" name="husky_basic_odom" type="basic_odom_publisher" >
+    <param name="frame_id" type="string" value="$(arg frame)" />
+    <param name="child_frame_id" type="string" value="$(arg child_frame)" />
+  </node>
   
   <!-- Diagnostic Aggregator -->
   <node pkg="diagnostic_aggregator" type="aggregator_node" name="diagnostic_aggregator">
-    <rosparam command="load" file="$(find husky_base)/config/diagnostics.yaml"/>
+    <rosparam command="load" file="$(find husky_fei_base)/config/diagnostics.yaml"/>
   </node>
+  
 </launch>
