@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 2.8.3)
-project(husky_base)
+project(husky_fei_base)
 
 find_package(catkin REQUIRED COMPONENTS roslaunch)
 
