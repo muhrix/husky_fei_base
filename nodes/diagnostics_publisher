@@ -51,9 +51,9 @@ class HuskyDiagnostics():
         rospy.init_node('husky_diagnostics')
         self.diag_pub = rospy.Publisher('/diagnostics', DiagnosticArray)
         self.last_diagnostics_time = rospy.get_rostime()        
-        rospy.Subscriber('husky/data/system_status', SystemStatus, self.HandleSystemStatus)
-        rospy.Subscriber('husky/data/safety_status', SafetyStatus, self.HandleSafetyStatus)
-        rospy.Subscriber('husky/data/power_status', PowerStatus, self.HandlePowerStatus)
+        rospy.Subscriber('data/system_status', SystemStatus, self.HandleSystemStatus)
+        rospy.Subscriber('data/safety_status', SafetyStatus, self.HandleSafetyStatus)
+        rospy.Subscriber('data/power_status', PowerStatus, self.HandlePowerStatus)
 
         self.stat_estop = [] 
         self.stat_power = []
