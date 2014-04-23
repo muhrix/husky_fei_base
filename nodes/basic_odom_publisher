@@ -62,15 +62,17 @@ class DeadReckoning(object):
         rospy.init_node('dead_reckoning')
         # Parameters
         self.width = rospy.get_param('~width',0.5)
+        self.frame_id = rospy.get_param('~frame_id', "odom_combined")
+        self.child_frame_id = rospy.get_param('~child_frame_id', "base_footprint")
 
         # Set up publishers/subscribers
         self.pub_enc_odom = rospy.Publisher('encoder',Odometry);
-        rospy.Subscriber('husky/data/encoders', Encoders, self.HandleEncoder)
+        rospy.Subscriber('data/encoders', Encoders, self.HandleEncoder)
 
         # Initialize odometry message
         self.odom = Odometry()
-        self.odom.header.frame_id = "odom_combined"
-        self.odom.child_frame_id = "base_footprint" 
+        self.odom.header.frame_id = self.frame_id
+        self.odom.child_frame_id = self.child_frame_id 
         self.last_encoder = []
 
     def HandleEncoder(self,data):
